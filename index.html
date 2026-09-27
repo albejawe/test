@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>بوابة النقاط</title>
+<style>
+  :root{
+    --bg:#f6f7f9;
+    --surface:#ffffff;
+    --surface-soft:#fbfbfc;
+    --text:#111827;
+    --muted:#6b7280;
+    --line:#e5e7eb;
+    --accent:#0f766e;
+    --accent-soft:#f0fdfa;
+    --shadow:0 10px 30px rgba(17,24,39,.05);
+    --radius:20px;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI", Tahoma, Arial, sans-serif;
+    line-height:1.6;
+  }
+
+  .page{
+    max-width:1120px;
+    margin:0 auto;
+    padding:28px 18px 56px;
+  }
+
+  .login-wrap{
+    min-height:90vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .login-card{
+    width:min(620px, 100%);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+    padding:34px;
+  }
+
+  .kicker{
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+
+  h1{
+    margin:0 0 12px;
+    font-size:38px;
+    line-height:1.2;
+    letter-spacing:-.5px;
+    font-weight:700;
+  }
+
+  .lead{
+    margin:0 0 26px;
+    color:var(--muted);
+    font-size:15px;
+  }
+
+  .demo-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+    padding:14px 16px;
+    background:var(--surface-soft);
+    border:1px solid var(--line);
+    border-radius:16px;
+    font-size:15px;
+  }
+
+  .demo-number{
+    direction:ltr;
+    font-weight:700;
+    color:var(--accent);
+  }
+
+  .form{
+    display:flex;
+    gap:10px;
+  }
+
+  input{
+    flex:1;
+    min-width:0;
+    height:54px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:#fff;
+    padding:0 16px;
+    font-size:16px;
+    color:var(--text);
+    direction:ltr;
+    text-align:left;
+    outline:none;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+
+  input:focus{
+    border-color:#9ca3af;
+    box-shadow:0 0 0 4px rgba(17,24,39,.04);
+  }
+
+  button{
+    height:54px;
+    border:none;
+    border-radius:16px;
+    padding:0 22px;
+    background:var(--text);
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+
+  button:hover{
+    opacity:.94;
+  }
+
+  .error{
+    min-height:18px;
+    margin-top:10px;
+    color:#b91c1c;
+    font-size:13px;
+  }
+
+  .note{
+    margin-top:18px;
+    color:var(--muted);
+    font-size:12px;
+  }
+
+  #dashboard{
+    display:none;
+  }
+
+  .header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:22px;
+  }
+
+  .header h2{
+    margin:0;
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-.4px;
+  }
+
+  .sub{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .simple-btn{
+    height:42px;
+    padding:0 16px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--text);
+    border-radius:14px;
+    font-size:14px;
+    font-weight:600;
+    box-shadow:none;
+  }
+
+  .grid-top{
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:16px;
+    margin-bottom:16px;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:22px;
+  }
+
+  .label{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:10px;
+  }
+
+  .big-number{
+    font-size:44px;
+    line-height:1;
+    font-weight:700;
+    letter-spacing:-1px;
+    margin-bottom:10px;
+  }
+
+  .value-line{
+    font-size:15px;
+    color:var(--muted);
+  }
+
+  .value-line strong{
+    color:var(--text);
+    font-weight:700;
+  }
+
+  .split{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:20px;
+  }
+
+  .mini{
+    padding:16px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--surface-soft);
+  }
+
+  .mini .n{
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:4px;
+  }
+
+  .mini .t{
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:16px;
+    margin-bottom:18px;
+  }
+
+  .stat .v{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+
+  .stat .t{
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .section-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:14px;
+    margin:26px 0 14px;
+  }
+
+  .section-head h3{
+    margin:0;
+    font-size:22px;
+    font-weight:700;
+  }
+
+  .section-head p{
+    margin:4px 0 0;
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .tab{
+    padding:9px 13px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:#fff;
+    color:var(--muted);
+    font-size:13px;
+    cursor:pointer;
+  }
+
+  .tab.active{
+    color:var(--text);
+    background:var(--surface-soft);
+  }
+
+  .list{
+    display:grid;
+    gap:12px;
+  }
+
+  .booking{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:14px;
+    align-items:center;
+    padding:18px 20px;
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:#fff;
+    cursor:pointer;
+    transition:background .15s ease, border-color .15s ease;
+  }
+
+  .booking:hover{
+    background:var(--surface-soft);
+    border-color:#d1d5db;
+  }
+
+  .booking-title{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+
+  .meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 12px;
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  .points{
+    text-align:left;
+  }
+
+  .points strong{
+    display:block;
+    font-size:18px;
+    color:var(--text);
+  }
+
+  .points span{
+    color:var(--muted);
+    font-size:12px;
+  }
+
+  .bottom{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:16px;
+    margin-top:18px;
+  }
+
+  .ledger{
+    display:grid;
+    gap:0;
+  }
+
+  .ledger-row{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px;
+    align-items:center;
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+
+  .ledger-row:last-child{
+    border-bottom:none;
+  }
+
+  .ledger-title{
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:4px;
+  }
+
+  .ledger-sub{
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .pos{color:#166534;font-weight:700}
+  .neg{color:#b91c1c;font-weight:700}
+
+  .redeem-box{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    min-height:100%;
+  }
+
+  .redeem-box h4{
+    margin:0 0 8px;
+    font-size:24px;
+    line-height:1.4;
+    font-weight:700;
+  }
+
+  .redeem-box p{
+    margin:0 0 20px;
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .redeem-box .summary{
+    padding:16px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--accent-soft);
+    margin-bottom:16px;
+  }
+
+  .redeem-box .summary .x{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:4px;
+  }
+
+  .redeem-box .summary .y{
+    font-size:28px;
+    font-weight:700;
+  }
+
+  .footer{
+    margin-top:24px;
+    font-size:12px;
+    color:var(--muted);
+    text-align:center;
+  }
+
+  .modal{
+    position:fixed;
+    inset:0;
+    background:rgba(17,24,39,.35);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+  }
+
+  .modal-card{
+    width:min(560px,100%);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:24px;
+    box-shadow:0 30px 80px rgba(17,24,39,.15);
+    padding:24px;
+  }
+
+  .modal-top{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:flex-start;
+    margin-bottom:8px;
+  }
+
+  .close{
+    background:#fff;
+    color:var(--text);
+    border:1px solid var(--line);
+    box-shadow:none;
+    width:40px;
+    min-width:40px;
+    height:40px;
+    padding:0;
+    border-radius:12px;
+  }
+
+  .modal-card h4{
+    margin:0;
+    font-size:24px;
+  }
+
+  .modal-sub{
+    color:var(--muted);
+    font-size:14px;
+    margin-bottom:18px;
+  }
+
+  .detail-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  .detail{
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:14px;
+    background:var(--surface-soft);
+  }
+
+  .detail small{
+    display:block;
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:6px;
+  }
+
+  .detail strong{
+    font-size:14px;
+  }
+
+  @media (max-width:900px){
+    .grid-top, .bottom{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(2, 1fr)}
+  }
+
+  @media (max-width:620px){
+    .page{padding:18px 14px 40px}
+    .login-card{padding:24px 18px}
+    h1{font-size:29px}
+    .form{flex-direction:column}
+    .header{flex-direction:column}
+    .grid-top{gap:12px}
+    .stats{grid-template-columns:1fr 1fr; gap:12px}
+    .booking{grid-template-columns:1fr}
+    .points{text-align:right}
+    .detail-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <section id="login" class="login-wrap">
+      <div class="login-card">
+        <div class="kicker">صفحة تجريبية</div>
+        <h1>اطّلع على حجوزاتك ونقاطك بسهولة</h1>
+        <p class="lead">هذه واجهة تجريبية لعرض الحجوزات السابقة، إجمالي النقاط، قيمة النقاط عند التحويل، وحركة الرصيد بشكل واضح وبسيط.</p>
+
+        <div class="demo-box">
+          <span>اكتب هذا الرقم للتجربة قبل مربع الرقم:</span>
+          <span class="demo-number">799552013</span>
+        </div>
+
+        <div class="form">
+          <input id="phone" inputmode="numeric" maxlength="15" placeholder="رقم الهاتف" />
+          <button onclick="openAccount()">عرض البيانات</button>
+        </div>
+        <div id="error" class="error"></div>
+
+        <div class="note">هذه نسخة عرض فقط. في النظام الحقيقي يفضّل إرسال رمز تحقق إلى الهاتف قبل فتح الحساب.</div>
+      </div>
+    </section>
+
+    <main id="dashboard">
+      <div class="header">
+        <div>
+          <h2>ملف العميل</h2>
+          <div class="sub">محمد أحمد · 799552013</div>
+        </div>
+        <button class="simple-btn" onclick="logout()">تبديل الرقم</button>
+      </div>
+
+      <section class="grid-top">
+        <div class="card">
+          <div class="label">الرصيد الحالي من النقاط</div>
+          <div class="big-number">18,460</div>
+          <div class="value-line">القيمة الحالية عند التحويل: <strong>36.920 د.أ</strong></div>
+
+          <div class="split">
+            <div class="mini">
+              <div class="n">500</div>
+              <div class="t">نقطة = 1 د.أ</div>
+            </div>
+            <div class="mini">
+              <div class="n">6,240</div>
+              <div class="t">نقطة تم استبدالها سابقًا</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="label">ملخص سريع</div>
+          <div class="split" style="margin-top:0">
+            <div class="mini">
+              <div class="n">12</div>
+              <div class="t">إجمالي الحجوزات</div>
+            </div>
+            <div class="mini">
+              <div class="n">1,842 د.أ</div>
+              <div class="t">إجمالي قيمة الحجوزات</div>
+            </div>
+            <div class="mini">
+              <div class="n">24,700</div>
+              <div class="t">النقاط المكتسبة</div>
+            </div>
+            <div class="mini">
+              <div class="n">36.920 د.أ</div>
+              <div class="t">قيمة الرصيد الحالي</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="card stat">
+          <div class="v">4</div>
+          <div class="t">حجوزات فنادق</div>
+        </div>
+        <div class="card stat">
+          <div class="v">5</div>
+          <div class="t">حجوزات طيران</div>
+        </div>
+        <div class="card stat">
+          <div class="v">3</div>
+          <div class="t">طلبات فيزا</div>
+        </div>
+        <div class="card stat">
+          <div class="v">7</div>
+          <div class="t">آخر عمليات حركة نقاط</div>
+        </div>
+      </section>
+
+      <div class="section-head">
+        <div>
+          <h3>الحجوزات السابقة</h3>
+          <p>عرض مباشر للحجوزات مع النقاط المستحقة لكل عملية.</p>
+        </div>
+        <div class="tabs">
+          <div class="tab active" onclick="filterBookings('all', this)">الكل</div>
+          <div class="tab" onclick="filterBookings('hotel', this)">فنادق</div>
+          <div class="tab" onclick="filterBookings('flight', this)">طيران</div>
+          <div class="tab" onclick="filterBookings('visa', this)">فيزا</div>
+        </div>
+      </div>
+
+      <section id="bookings" class="list">
+        <article class="booking" data-type="hotel" onclick="showDetail('فندق The Marmara Taksim','إسطنبول، تركيا','AW-H-10482','12–17 سبتمبر 2026','325.000 د.أ','3,250 نقطة')">
+          <div>
+            <div class="booking-title">فندق The Marmara Taksim</div>
+            <div class="meta">
+              <span>إسطنبول</span>
+              <span>5 ليالي</span>
+              <span>مكتمل</span>
+              <span>AW-H-10482</span>
+            </div>
+          </div>
+          <div class="points"><strong>+3,250</strong><span>نقطة</span></div>
+        </article>
+
+        <article class="booking" data-type="flight" onclick="showDetail('Kuwait Airways · KWI → IST','الكويت إلى إسطنبول','AW-F-88210','12 سبتمبر 2026','148.000 د.أ','1,480 نقطة')">
+          <div>
+            <div class="booking-title">Kuwait Airways · KWI → IST</div>
+            <div class="meta">
+              <span>ذهاب وعودة</span>
+              <span>Economy</span>
+              <span>مكتمل</span>
+              <span>AW-F-88210</span>
+            </div>
+          </div>
+          <div class="points"><strong>+1,480</strong><span>نقطة</span></div>
+        </article>
+
+        <article class="booking" data-type="visa" onclick="showDetail('فيزا تركيا','طلب تأشيرة سياحية','AW-V-53177','03 سبتمبر 2026','28.000 د.أ','280 نقطة')">
+          <div>
+            <div class="booking-title">فيزا تركيا</div>
+            <div class="meta">
+              <span>سياحية</span>
+              <span>طلب واحد</span>
+              <span>مكتمل</span>
+              <span>AW-V-53177</span>
+            </div>
+          </div>
+          <div class="points"><strong>+280</strong><span>نقطة</span></div>
+        </article>
+
+        <article class="booking" data-type="hotel" onclick="showDetail('Rove Downtown Dubai','دبي، الإمارات','AW-H-09931','18–21 يوليو 2026','255.000 د.أ','2,550 نقطة')">
+          <div>
+            <div class="booking-title">Rove Downtown Dubai</div>
+            <div class="meta">
+              <span>دبي</span>
+              <span>3 ليالي</span>
+              <span>مكتمل</span>
+              <span>AW-H-09931</span>
+            </div>
+          </div>
+          <div class="points"><strong>+2,550</strong><span>نقطة</span></div>
+        </article>
+
+        <article class="booking" data-type="flight" onclick="showDetail('Emirates · KWI → DXB','الكويت إلى دبي','AW-F-86744','18 يوليو 2026','96.000 د.أ','960 نقطة')">
+          <div>
+            <div class="booking-title">Emirates · KWI → DXB</div>
+            <div class="meta">
+              <span>ذهاب وعودة</span>
+              <span>Economy</span>
+              <span>مكتمل</span>
+              <span>AW-F-86744</span>
+            </div>
+          </div>
+          <div class="points"><strong>+960</strong><span>نقطة</span></div>
+        </article>
+      </section>
+
+      <section class="bottom">
+        <div class="card">
+          <div class="section-head" style="margin-top:0">
+            <div>
+              <h3>حركة النقاط</h3>
+              <p>سجل لكل عملية إضافة أو خصم.</p>
+            </div>
+          </div>
+
+          <div class="ledger">
+            <div class="ledger-row">
+              <div>
+                <div class="ledger-title">مكافأة حجز فندق إسطنبول</div>
+                <div class="ledger-sub">17 سبتمبر 2026 · AW-H-10482</div>
+              </div>
+              <div class="pos">+3,250</div>
+            </div>
+
+            <div class="ledger-row">
+              <div>
+                <div class="ledger-title">مكافأة حجز طيران إسطنبول</div>
+                <div class="ledger-sub">12 سبتمبر 2026 · AW-F-88210</div>
+              </div>
+              <div class="pos">+1,480</div>
+            </div>
+
+            <div class="ledger-row">
+              <div>
+                <div class="ledger-title">استبدال نقاط على حجز سابق</div>
+                <div class="ledger-sub">18 يوليو 2026 · خصم 12.480 د.أ</div>
+              </div>
+              <div class="neg">−6,240</div>
+            </div>
+
+            <div class="ledger-row">
+              <div>
+                <div class="ledger-title">مكافأة إضافية موسمية</div>
+                <div class="ledger-sub">01 يوليو 2026 · حملة ترويجية</div>
+              </div>
+              <div class="pos">+2,000</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card redeem-box">
+          <div>
+            <h4>قيمة الرصيد الحالية</h4>
+            <p>يمكن استخدام النقاط كخصم على الحجز القادم، أو دمجها مع الدفع النقدي بحسب سياسة النظام.</p>
+
+            <div class="summary">
+              <div class="x">الرصيد القابل للتحويل</div>
+              <div class="y">36.920 د.أ</div>
+            </div>
+          </div>
+
+          <button onclick="alert('نسخة تجريبية فقط')">استبدال النقاط</button>
+        </div>
+      </section>
+
+      <div class="footer">واجهة تجريبية لعرض الحجوزات والنقاط</div>
+    </main>
+  </div>
+
+  <div id="modal" class="modal" onclick="if(event.target===this) closeModal()">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div>
+          <h4 id="mTitle"></h4>
+          <div id="mPlace" class="modal-sub"></div>
+        </div>
+        <button class="close" onclick="closeModal()">×</button>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail">
+          <small>رقم الحجز</small>
+          <strong id="mRef"></strong>
+        </div>
+        <div class="detail">
+          <small>التاريخ</small>
+          <strong id="mDate"></strong>
+        </div>
+        <div class="detail">
+          <small>القيمة</small>
+          <strong id="mValue"></strong>
+        </div>
+        <div class="detail">
+          <small>النقاط المكتسبة</small>
+          <strong id="mPoints"></strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const DEMO_PHONE = "799552013";
+
+  function openAccount(){
+    const phone = document.getElementById("phone").value.replace(/\D/g, "");
+    const error = document.getElementById("error");
+    if(phone !== DEMO_PHONE){
+      error.textContent = "للتجربة استخدم الرقم 799552013";
+      return;
+    }
+    error.textContent = "";
+    document.getElementById("login").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function logout(){
+    document.getElementById("phone").value = "";
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("login").style.display = "flex";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.getElementById("phone").addEventListener("keydown", function(e){
+    if(e.key === "Enter") openAccount();
+  });
+
+  function filterBookings(type, el){
+    document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+    el.classList.add("active");
+
+    document.querySelectorAll(".booking").forEach(item => {
+      item.style.display = (type === "all" || item.dataset.type === type) ? "grid" : "none";
+    });
+  }
+
+  function showDetail(title, place, ref, date, value, points){
+    document.getElementById("mTitle").textContent = title;
+    document.getElementById("mPlace").textContent = place;
+    document.getElementById("mRef").textContent = ref;
+    document.getElementById("mDate").textContent = date;
+    document.getElementById("mValue").textContent = value;
+    document.getElementById("mPoints").textContent = points;
+    document.getElementById("modal").style.display = "flex";
+  }
+
+  function closeModal(){
+    document.getElementById("modal").style.display = "none";
+  }
+</script>
+</body>
+</html>
